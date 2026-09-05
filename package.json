@@ -1,0 +1,14 @@
+{
+  "name": "embodied-wumpus-world-lab",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "test": "node --test",
+    "start": "node src/cli.js",
+    "demo": "node src/cli.js demo",
+    "play": "node src/cli.js play",
+    "watch": "node src/cli.js watch"
+  }
+}
