@@ -1,65 +1,68 @@
 import { createSession, demoWorld } from './session.js';
-import { materialize } from './tui/materialize.js';
 import { breezeExperiment, materializePriors } from './priors.js';
+import { explainCell, senseGuide } from './learning.js';
 
 const $ = id => document.getElementById(id);
-let session, index = 0, running = false, timer;
-function stop() { running = false; clearTimeout(timer); $('run').textContent = 'Run policy [Space]'; }
-function report(error) { stop(); $('message').textContent = error.message; }
-function prior() {
-  const value = Number($('prior').value);
-  if (!Number.isFinite(value) || value <= 0 || value >= 1) throw Error('Choose a pit prior greater than 0 and less than 1.');
-  return value;
+const names = {cave:'Cave & controls',senses:'Senses & changes',reason:'Square evidence',remember:'Remember Wumpus',prior:'Prior experiment',trace:'PxC & Tick trace'};
+const presets = {remember:['cave','remember','senses'],play:['cave','reason','senses'],inspect:['cave','prior','trace']};
+let views = [...presets.remember], session, index=0, running=false, timer, selected=[1,1];
+const panels = Object.fromEntries([...document.querySelectorAll('[data-panel]')].map(p=>[p.dataset.panel,p]));
+const slots = [...document.querySelectorAll('.slot')];
+function arrange(save=true) {
+  Object.values(panels).forEach(p=>$('panels').append(p));
+  slots.forEach((slot,i)=>{slot.querySelector('.mount').append(panels[views[i]]);slot.querySelector('select').value=views[i];});
+  if(save)try{localStorage.setItem('wumpus-views-v1',JSON.stringify(views));}catch{}
 }
-function compare() { $('priors').textContent = materializePriors(breezeExperiment(prior())); }
-function draw() {
-  const frame = session.frames[index];
-  const options = {reveal:$('reveal').checked, mode:running ? 'watch' : 'play'};
-  $('screen').textContent = materialize(frame,options);
-  const detailed = materialize(frame,{...options,inspect:true});
-  $('trace').textContent = detailed.slice(detailed.indexOf('PIT BELIEFS'));
-  const live = index === session.frames.length-1;
-  $('position').textContent = `${index+1} / ${session.frames.length}`;
-  $('back').disabled = index === 0; $('next').disabled = live;
-  for (const button of document.querySelectorAll('[data-action]')) button.disabled = !live || frame.world.terminal;
-  $('step').disabled = !live || frame.world.terminal;
-  $('run').disabled = !live || frame.world.terminal;
+slots.forEach((slot,i)=>{
+  const picker=slot.querySelector('select');
+  Object.entries(names).forEach(([value,label])=>picker.add(new Option(label,value)));
+  picker.onchange=()=>{const other=views.indexOf(picker.value);if(other!==-1)views[other]=views[i];views[i]=picker.value;$('layout').value='custom';arrange();};
+});
+try{const saved=JSON.parse(localStorage.getItem('wumpus-views-v1'));if(Array.isArray(saved)&&saved.length===3&&new Set(saved).size===3&&saved.every(v=>Object.hasOwn(names,v))){views=saved;$('layout').value='custom';}}catch{}
+arrange(false);
+$('layout').onchange=()=>{if(presets[$('layout').value]){views=[...presets[$('layout').value]];arrange();}};
+function mobileSlot(n){slots.forEach((s,i)=>s.classList.toggle('mobile-hidden',i!==n));document.querySelectorAll('#mobile-tabs button').forEach((b,i)=>b.setAttribute('aria-pressed',String(i===n)));}
+$('mobile-tabs').onclick=e=>{const b=e.target.closest('button');if(b)mobileSlot(Number(b.dataset.slot));};mobileSlot(0);
+$('settings-toggle').onclick=()=>{$('settings').hidden=!$('settings').hidden;$('settings-toggle').setAttribute('aria-expanded',String(!$('settings').hidden));};
+function stop(){running=false;clearTimeout(timer);$('run').textContent='Run policy';}
+function report(e){stop();$('message').textContent=e.message;}
+function compare(){const p=Number($('experiment-prior').value)/100,result=breezeExperiment(p);$('prior-label').textContent=`${Math.round(p*100)}%`;$('posterior').textContent=`${(result.probabilityA*100).toFixed(1)}% pit in A`;$('prior-explanation').textContent=`Before the breeze: ${Math.round(p*100)}%. After it: ${(result.probabilityA*100).toFixed(1)}%. The clue rules out “neither.” The remaining possibilities keep their relative weights.`;$('priors').textContent=materializePriors(result);}
+function evidence(frame){const info=explainCell(frame,selected);$('cell-title').textContent=`What do I know at (${selected})?`;$('risk').textContent=info.probability===null?'Unknown':`${(info.probability*100).toFixed(1)}% pit`;$('cell-summary').textContent=info.summary;$('evidence').replaceChildren(...info.evidence.map(text=>{const li=document.createElement('li');li.textContent=text;return li;}));}
+function draw(){
+  const frame=session.frames[index], w=frame.world, a=w.agent, b=frame.policy.belief;
+  const live=index===session.frames.length-1;
+  $('stats').replaceChildren(...[`Turn ${w.turn}`,`Score ${w.score}`,a.heading,`Arrow ${a.hasArrow?'1':'0'}`,a.hasGold?'Gold collected':'No gold'].map(t=>{const el=document.createElement('span');el.textContent=t;return el;}));
+  const board=$('board');board.style.gridTemplateColumns=`repeat(${w.size},1fr)`;board.replaceChildren();
+  const visited=new Set(frame.policy.visited.map(p=>p.join(',')));
+  for(let y=w.size;y>=1;y--)for(let x=1;x<=w.size;x++){
+    const key=`${x},${y}`,here=a.x===x&&a.y===y,seen=visited.has(key),button=document.createElement('button');
+    let symbol=seen?'·':'?';
+    if($('reveal').checked){symbol='·';if(w.pits.some(p=>p.x===x&&p.y===y))symbol='P';if(w.wumpus.x===x&&w.wumpus.y===y)symbol=w.wumpus.alive?'W':'w';if(w.gold.x===x&&w.gold.y===y&&!w.gold.grabbed)symbol='G';}
+    if(here)symbol=a.alive?({east:'→',west:'←',north:'↑',south:'↓'}[a.heading]):'×';
+    button.className=`cell${seen?' visited':''}${here?' here':''}${selected.join(',')===key?' selected':''}`;
+    button.setAttribute('aria-label',`Square ${key}, ${here?'you are here':seen?'visited':'unexplored'}${$('reveal').checked?`, revealed ${symbol}`:''}`);button.setAttribute('aria-pressed',String(selected.join(',')===key));
+    button.append(document.createTextNode(symbol));const coord=document.createElement('small');coord.textContent=key;button.append(coord);
+    button.onclick=()=>{selected=[x,y];if(!views.includes('reason')){views[1]='reason';$('layout').value='custom';arrange();}draw();if(matchMedia('(max-width:700px)').matches)mobileSlot(views.indexOf('reason'));};board.append(button);
+  }
+  $('legend').textContent=$('reveal').checked?'OBSERVER REVEAL · P pit · W live Wumpus · w dead Wumpus · G gold':'? unexplored · · visited · arrow = you';
+  $('senses').replaceChildren(...(w.terminal ? ['The run has ended. No new observation is being added to the belief model.'] : senseGuide(frame.percept)).map(t=>{const p=document.createElement('p');p.className='sense';p.textContent=t;return p;}));
+  const previous=session.frames[index-1],count=b.candidates.length,old=previous?.policy.belief.candidates.length;
+  $('change').textContent=w.terminal?`Run ended: ${w.outcome}. Final score ${w.score}. Beliefs below remain the last live estimate. Use the arrows to revisit your decisions.`:previous?`${w.lastAction}: ${old-count} pit layouts ruled out; ${count.toLocaleString()} remain consistent with your observations.${frame.percept.bump?' You hit a wall and stayed in place.':''}`:`Your first observation has already updated the starting ${(b.pitPrior*100).toFixed(0)}% pit prior. ${count.toLocaleString()} pit layouts remain possible. Try Forward, then compare the clues.`;
+  evidence(frame);
+  $('trace').textContent=frame.records.map(r=>`${r.id}\nRead: ${(r.actualConsumes??r.consumes).join(', ')}\nWrote: ${(r.actualProduces??r.produces).join(', ')}\nCalculations: ${(r.calculations??[]).map(c=>c.address).join(', ')||'policy closure (not a registered calculation)'}\n`).join('\n');
+  $('position').textContent=`Frame ${index+1} / ${session.frames.length}`;$('timeline-state').textContent=live?(w.terminal?'Finished':running?'Policy running':'Live · your move'):'Replay · next → to return';
+  $('back').disabled=index===0;$('next').disabled=live;
+  document.querySelectorAll('[data-action],#step,#run').forEach(button=>button.disabled=!live||w.terminal);
 }
-function restart() {
-  try {
-    const probability = prior(), seed = Number($('seed').value);
-    if (!Number.isInteger(seed)) throw Error('Seed must be an integer.');
-    const next = createSession({seed, prior:probability, world:$('world').value === 'demo' ? demoWorld() : undefined});
-    stop(); session = next; index=0; $('message').textContent=''; compare(); draw();
-  } catch(e) { report(e); }
-}
-function act(action) {
-  if (!session || index !== session.frames.length-1 || session.snapshot().world.terminal) return;
-  try { stop(); session.act(action); index=session.frames.length-1; draw(); } catch(e) {report(e);}
-}
-function step() {
-  if (index !== session.frames.length-1) return;
-  session.auto(); index=session.frames.length-1;
-  if (session.frames[index].world.terminal) stop();
-  draw();
-}
-function tick() {
-  if (!running) return;
-  try {step(); if(running) timer=setTimeout(tick,1650-Number($('speed').value));} catch(e){report(e);}
-}
-$('restart').onclick=restart;
-$('prior').oninput=()=>{try{compare();$('message').textContent='';}catch(e){report(e);}};
-$('reveal').onchange=()=>draw();
+function restart(){try{const prior=Number($('prior').value),seed=Number($('seed').value);if(!Number.isFinite(prior)||prior<=0||prior>=1)throw Error('Pit prior must be between 0 and 1, excluding endpoints.');if(!Number.isInteger(seed))throw Error('Seed must be an integer.');const next=createSession({seed,prior,world:$('world').value==='demo'?demoWorld():undefined});stop();session=next;index=0;selected=[1,1];$('message').textContent='';draw();}catch(e){report(e);}}
+function act(action){if(index!==session.frames.length-1||session.frames[index].world.terminal)return;try{stop();session.act(action);index=session.frames.length-1;draw();}catch(e){report(e);}}
+function step(){if(index!==session.frames.length-1||session.frames[index].world.terminal)return;session.auto();index=session.frames.length-1;if(session.frames[index].world.terminal)stop();draw();}
+function tick(){if(!running)return;try{step();if(running)timer=setTimeout(tick,1650-Number($('speed').value));}catch(e){report(e);}}
+$('restart').onclick=restart;$('experiment-prior').oninput=compare;$('reveal').onchange=draw;
 $('actions').onclick=e=>{const action=e.target.closest('button')?.dataset.action;if(action)act(action);};
 $('step').onclick=()=>{try{stop();step();}catch(e){report(e);}};
-$('run').onclick=()=>{if(running){stop();draw();}else{running=true;$('run').textContent='Pause [Space]';tick();}};
-$('back').onclick=()=>{stop();index=Math.max(0,index-1);draw();};
-$('next').onclick=()=>{stop();index=Math.min(session.frames.length-1,index+1);draw();};
-$('save').onclick=()=>{const url=URL.createObjectURL(new Blob([JSON.stringify(session.export())],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='wumpus-replay.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
-window.addEventListener('keydown',e=>{
-  if(['INPUT','SELECT','TEXTAREA','BUTTON'].includes(e.target.tagName)||e.ctrlKey||e.metaKey||e.altKey)return;
-  const key=e.key.toLowerCase(), map={f:'forward',l:'turnLeft',r:'turnRight',g:'grab',s:'shoot',c:'climb'};
-  if(map[key]){e.preventDefault();act(map[key]);}
-  else {const id={n:'step',' ':'run','[':'back',']':'next'}[key];if(id){e.preventDefault();$(id).click();}}
-});
-restart();
+$('run').onclick=()=>{if(running){stop();draw();}else{running=true;$('run').textContent='Pause policy';tick();}};
+$('back').onclick=()=>{stop();index=Math.max(0,index-1);draw();};$('next').onclick=()=>{stop();index=Math.min(session.frames.length-1,index+1);draw();};
+$('save').onclick=()=>{const url=URL.createObjectURL(new Blob([JSON.stringify(session.export())],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='wumpus-replay.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
+window.addEventListener('keydown',e=>{if(['INPUT','SELECT','TEXTAREA','BUTTON'].includes(e.target.tagName)||e.ctrlKey||e.metaKey||e.altKey)return;const key=e.key.toLowerCase(),map={f:'forward',l:'turnLeft',r:'turnRight',g:'grab',s:'shoot',c:'climb'};if(map[key]){e.preventDefault();act(map[key]);}else{const id={n:'step',' ':'run','[':'back',']':'next'}[key];if(id){e.preventDefault();$(id).click();}}});
+compare();restart();

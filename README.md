@@ -89,3 +89,9 @@ materials, make policy atom selections editable, add Wumpus constraints, and
 migrate a real ChainSpot producer onto the shared package. The current policy
 is stateful outside PxC; Tick rollback protects PxC writes, not arbitrary state
 inside a third-party policy.
+
+### A return to Wumpus
+
+The browser opens in **Remember Wumpus**, with a practice cave and a short learning sequence. Move forward once to encounter a breeze; select a square to open its recorded pit evidence. **Play & reason** and **Inspect the machinery** offer alternative panel presets. Each slot can show any panel; selecting a panel already visible swaps the two. Choices persist in this browser. Narrow screens use three slot tabs; panels scroll internally within the viewport.
+
+The prior slider is a separate two-neighbor experiment, with a fixed breeze observation. Starting priors for the actual game live under Run settings. Cell explanations use only the policy's recorded observations and beliefs. Zero pit risk does not establish safety from a Wumpus.
