@@ -95,3 +95,16 @@ inside a third-party policy.
 The browser opens in **Remember Wumpus**, with a practice cave and a short learning sequence. Move forward once to encounter a breeze; select a square to open its recorded pit evidence. **Play & reason** and **Inspect the machinery** offer alternative panel presets. Each slot can show any panel; selecting a panel already visible swaps the two. Choices persist in this browser. Narrow screens use three slot tabs; panels scroll internally within the viewport.
 
 The prior slider is a separate two-neighbor experiment, with a fixed breeze observation. Starting priors for the actual game live under Run settings. Cell explanations use only the policy's recorded observations and beliefs. Zero pit risk does not establish safety from a Wumpus.
+
+### Belief debugger
+
+Choose **Belief debugger** in the workspace selector. The reasoning explorer combines pit and Wumpus inference, shows candidate danger bounds, and routes through visited cells. Its maximum danger bound is a Run argument; the original pit explorer remains selectable.
+
+- **Alternate prior & branches:** recompute this frame from the same observations, compare selected-square probabilities, then fork the same cave/history to try a different future. Switch branches without destroying the original.
+- **Map:** show pit probabilities, Wumpus location probabilities, or alternate-prior percentage-point changes. Reveal is still observer-only.
+- **PxC material lineage:** follow a decision through named calculations to captured assumptions and agent knowledge. Constraint evaluations read their materials and basis through PxC and report satisfied, violated, or unknown.
+- Reasoning decisions and their investigation receipts accompany their action in exported replays. Large hypothesis arrays are omitted from investigation receipts; exact counts and marginals remain.
+
+The investigation uses a separate PxC containing no hidden world. It recomputes finite Bayesian pits and uniform compatible stationary Wumpus locations. A scream removes live danger but preserves the location distribution. The danger bound is `min(1, pit + live Wumpus)`, not an independence formula. The advisor does not plan shots or maximize expected score. Branch reconstruction supports the built-in tracker; arbitrary custom policies need their own reconstruction factory.
+
+Reusable core APIs, independent of Wumpus: [`evaluateConstraint`](docs/constraints.md), `traceAddress`, `createPxC`, and `executeTick`. See [belief debugger semantics](docs/belief-debugger.md).

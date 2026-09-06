@@ -32,3 +32,13 @@ test('prior comparison is calculated, normalized, and recorded', () => {
   assert.equal(a.records.length,2);
   assert.throws(()=>breezeExperiment(0),/mass|total/i);
 });
+
+test('fork replays the prefix in the same cave without changing its parent', () => {
+  const parent=createSession({world:demoWorld()});parent.act('forward');parent.act('turnLeft');
+  const before=parent.export();const fork=parent.fork(1,{prior:.5});
+  assert.deepEqual(fork.snapshot().world,parent.frames[1].world);
+  assert.equal(fork.snapshot().policy.belief.pitPrior,.5);
+  fork.act('turnRight');assert.deepEqual(parent.export(),before);
+  assert.equal(parent.frames[1].recordEnd,5);
+  assert.throws(()=>parent.fork(20),/frame/i);
+});
