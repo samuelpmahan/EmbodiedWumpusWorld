@@ -112,3 +112,5 @@ Reusable core APIs, independent of Wumpus: [`evaluateConstraint`](docs/constrain
 ### Deterministic teaching experiments
 
 The [bounded learner pilot](experiments/teaching/README.md) compiles five Wumpus concepts into exact probability lessons, tests transfer with Luna/Terra learners, and grades semantic assignments separately from arithmetic. Run `node experiments/teaching/report.js` to reproduce the saved grades without model calls.
+
+The [failure profile](experiments/failure-profile/README.md) separates compatible-but-incomplete world sets, incorrect weights, aggregation, division, and response-format errors across familiar, renamed, and changed-rule tasks. Raw outputs are retained; malformed responses remain marked as failures.
