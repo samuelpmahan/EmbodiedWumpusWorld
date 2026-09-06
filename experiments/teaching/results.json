@@ -1,0 +1,788 @@
+{
+  "pilot": {
+    "baseline": {
+      "correct": 4,
+      "total": 5,
+      "results": [
+        {
+          "id": "q1",
+          "expected": 0.5555555555555556,
+          "submitted": 0.5555555556,
+          "correct": true,
+          "reason": ""
+        },
+        {
+          "id": "q2",
+          "expected": 0.1111111111111111,
+          "submitted": 0.1111111111,
+          "correct": true,
+          "reason": ""
+        },
+        {
+          "id": "q3",
+          "expected": 0.5555555555555556,
+          "submitted": 0.5555555556,
+          "correct": true,
+          "reason": ""
+        },
+        {
+          "id": "q4",
+          "expected": 1,
+          "submitted": 1,
+          "correct": true,
+          "reason": ""
+        },
+        {
+          "id": "q5",
+          "expected": 0.8620689655172412,
+          "submitted": 0.8333333333,
+          "correct": false,
+          "reason": ""
+        }
+      ]
+    },
+    "transfer": {
+      "correct": 4,
+      "total": 5,
+      "results": [
+        {
+          "id": "q1",
+          "expected": 0.588235294117647,
+          "submitted": 0.5882352941,
+          "correct": true,
+          "reason": ""
+        },
+        {
+          "id": "q2",
+          "expected": 0.1764705882352941,
+          "submitted": 0.1764705882,
+          "correct": true,
+          "reason": ""
+        },
+        {
+          "id": "q3",
+          "expected": 0.588235294117647,
+          "submitted": 0.5882352941,
+          "correct": true,
+          "reason": ""
+        },
+        {
+          "id": "q4",
+          "expected": 1,
+          "submitted": 1,
+          "correct": true,
+          "reason": ""
+        },
+        {
+          "id": "q5",
+          "expected": 0.7083333333333333,
+          "submitted": 0.5882352941,
+          "correct": false,
+          "reason": ""
+        }
+      ]
+    }
+  },
+  "cohort": [
+    {
+      "id": "luna-low",
+      "model": "gpt-5.6-luna",
+      "effort": "low",
+      "baseline": {
+        "correct": 5,
+        "total": 5,
+        "results": [
+          {
+            "id": "q1",
+            "expected": 0.5555555555555556,
+            "submitted": 0.555555556,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q2",
+            "expected": 0.1111111111111111,
+            "submitted": 0.111111111,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q3",
+            "expected": 0.5555555555555556,
+            "submitted": 0.555555556,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q4",
+            "expected": 1,
+            "submitted": 1,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q5",
+            "expected": 0.8620689655172412,
+            "submitted": 0.862068966,
+            "correct": true,
+            "reason": ""
+          }
+        ]
+      },
+      "transfer": {
+        "correct": 5,
+        "total": 5,
+        "results": [
+          {
+            "id": "q1",
+            "expected": 0.588235294117647,
+            "submitted": 0.588235,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q2",
+            "expected": 0.1764705882352941,
+            "submitted": 0.176471,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q3",
+            "expected": 0.588235294117647,
+            "submitted": 0.588235,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q4",
+            "expected": 1,
+            "submitted": 1,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q5",
+            "expected": 0.7083333333333333,
+            "submitted": 0.708333,
+            "correct": true,
+            "reason": ""
+          }
+        ]
+      },
+      "certificate": {
+        "compatibleSetCorrect": true,
+        "missing": [],
+        "extra": [],
+        "duplicates": 0,
+        "violations": [],
+        "ledger": [
+          {
+            "pits": [
+              "A",
+              "C"
+            ],
+            "priorWeight": 0.04409999999999999,
+            "matchesQuery": false
+          },
+          {
+            "pits": [
+              "B",
+              "C"
+            ],
+            "priorWeight": 0.04409999999999999,
+            "matchesQuery": true
+          },
+          {
+            "pits": [
+              "A",
+              "B",
+              "C"
+            ],
+            "priorWeight": 0.018899999999999997,
+            "matchesQuery": true
+          },
+          {
+            "pits": [
+              "B",
+              "D"
+            ],
+            "priorWeight": 0.04409999999999999,
+            "matchesQuery": true
+          },
+          {
+            "pits": [
+              "A",
+              "B",
+              "D"
+            ],
+            "priorWeight": 0.018899999999999997,
+            "matchesQuery": true
+          },
+          {
+            "pits": [
+              "A",
+              "C",
+              "D"
+            ],
+            "priorWeight": 0.018899999999999997,
+            "matchesQuery": false
+          },
+          {
+            "pits": [
+              "B",
+              "C",
+              "D"
+            ],
+            "priorWeight": 0.018899999999999997,
+            "matchesQuery": true
+          },
+          {
+            "pits": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "priorWeight": 0.0081,
+            "matchesQuery": true
+          }
+        ],
+        "evidenceMass": 0.21599999999999997,
+        "submittedEvidenceMass": 0.216,
+        "evidenceMassCorrect": true,
+        "compiledAnswer": 0.7083333333333333
+      },
+      "pxcSolution": {
+        "status": "resolved",
+        "answer": 0.7083333333333333,
+        "calculation": "fn.solution.query"
+      }
+    },
+    {
+      "id": "luna-medium",
+      "model": "gpt-5.6-luna",
+      "effort": "medium",
+      "baseline": {
+        "correct": 5,
+        "total": 5,
+        "results": [
+          {
+            "id": "q1",
+            "expected": 0.5555555555555556,
+            "submitted": 0.555555556,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q2",
+            "expected": 0.1111111111111111,
+            "submitted": 0.111111111,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q3",
+            "expected": 0.5555555555555556,
+            "submitted": 0.555555556,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q4",
+            "expected": 1,
+            "submitted": 1,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q5",
+            "expected": 0.8620689655172412,
+            "submitted": 0.862068966,
+            "correct": true,
+            "reason": ""
+          }
+        ]
+      },
+      "transfer": {
+        "correct": 4,
+        "total": 5,
+        "results": [
+          {
+            "id": "q1",
+            "expected": 0.588235294117647,
+            "submitted": 0.5882352941,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q2",
+            "expected": 0.1764705882352941,
+            "submitted": 0.1764705882,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q3",
+            "expected": 0.588235294117647,
+            "submitted": 0.5882352941,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q4",
+            "expected": 1,
+            "submitted": 1,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q5",
+            "expected": 0.7083333333333333,
+            "submitted": 0.8521126761,
+            "correct": false,
+            "reason": ""
+          }
+        ]
+      },
+      "certificate": {
+        "compatibleSetCorrect": true,
+        "missing": [],
+        "extra": [],
+        "duplicates": 0,
+        "violations": [],
+        "ledger": [
+          {
+            "pits": [
+              "A",
+              "C"
+            ],
+            "priorWeight": 0.04409999999999999,
+            "matchesQuery": false
+          },
+          {
+            "pits": [
+              "B",
+              "C"
+            ],
+            "priorWeight": 0.04409999999999999,
+            "matchesQuery": true
+          },
+          {
+            "pits": [
+              "A",
+              "B",
+              "C"
+            ],
+            "priorWeight": 0.018899999999999997,
+            "matchesQuery": true
+          },
+          {
+            "pits": [
+              "B",
+              "D"
+            ],
+            "priorWeight": 0.04409999999999999,
+            "matchesQuery": true
+          },
+          {
+            "pits": [
+              "A",
+              "B",
+              "D"
+            ],
+            "priorWeight": 0.018899999999999997,
+            "matchesQuery": true
+          },
+          {
+            "pits": [
+              "A",
+              "C",
+              "D"
+            ],
+            "priorWeight": 0.018899999999999997,
+            "matchesQuery": false
+          },
+          {
+            "pits": [
+              "B",
+              "C",
+              "D"
+            ],
+            "priorWeight": 0.018899999999999997,
+            "matchesQuery": true
+          },
+          {
+            "pits": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "priorWeight": 0.0081,
+            "matchesQuery": true
+          }
+        ],
+        "evidenceMass": 0.21599999999999997,
+        "submittedEvidenceMass": 0.1278,
+        "evidenceMassCorrect": false,
+        "compiledAnswer": 0.7083333333333333
+      },
+      "pxcSolution": {
+        "status": "resolved",
+        "answer": 0.7083333333333333,
+        "calculation": "fn.solution.query"
+      }
+    },
+    {
+      "id": "terra-low",
+      "model": "gpt-5.6-terra",
+      "effort": "low",
+      "baseline": {
+        "correct": 5,
+        "total": 5,
+        "results": [
+          {
+            "id": "q1",
+            "expected": 0.5555555555555556,
+            "submitted": 0.555555556,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q2",
+            "expected": 0.1111111111111111,
+            "submitted": 0.111111111,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q3",
+            "expected": 0.5555555555555556,
+            "submitted": 0.555555556,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q4",
+            "expected": 1,
+            "submitted": 1,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q5",
+            "expected": 0.8620689655172412,
+            "submitted": 0.862068966,
+            "correct": true,
+            "reason": ""
+          }
+        ]
+      },
+      "transfer": {
+        "correct": 5,
+        "total": 5,
+        "results": [
+          {
+            "id": "q1",
+            "expected": 0.588235294117647,
+            "submitted": 0.588235294,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q2",
+            "expected": 0.1764705882352941,
+            "submitted": 0.176470588,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q3",
+            "expected": 0.588235294117647,
+            "submitted": 0.588235294,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q4",
+            "expected": 1,
+            "submitted": 1,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q5",
+            "expected": 0.7083333333333333,
+            "submitted": 0.708333333,
+            "correct": true,
+            "reason": ""
+          }
+        ]
+      },
+      "certificate": {
+        "compatibleSetCorrect": true,
+        "missing": [],
+        "extra": [],
+        "duplicates": 0,
+        "violations": [],
+        "ledger": [
+          {
+            "pits": [
+              "A",
+              "C"
+            ],
+            "priorWeight": 0.04409999999999999,
+            "matchesQuery": false
+          },
+          {
+            "pits": [
+              "B",
+              "C"
+            ],
+            "priorWeight": 0.04409999999999999,
+            "matchesQuery": true
+          },
+          {
+            "pits": [
+              "A",
+              "B",
+              "C"
+            ],
+            "priorWeight": 0.018899999999999997,
+            "matchesQuery": true
+          },
+          {
+            "pits": [
+              "B",
+              "D"
+            ],
+            "priorWeight": 0.04409999999999999,
+            "matchesQuery": true
+          },
+          {
+            "pits": [
+              "A",
+              "B",
+              "D"
+            ],
+            "priorWeight": 0.018899999999999997,
+            "matchesQuery": true
+          },
+          {
+            "pits": [
+              "A",
+              "C",
+              "D"
+            ],
+            "priorWeight": 0.018899999999999997,
+            "matchesQuery": false
+          },
+          {
+            "pits": [
+              "B",
+              "C",
+              "D"
+            ],
+            "priorWeight": 0.018899999999999997,
+            "matchesQuery": true
+          },
+          {
+            "pits": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "priorWeight": 0.0081,
+            "matchesQuery": true
+          }
+        ],
+        "evidenceMass": 0.21599999999999997,
+        "submittedEvidenceMass": 0.216,
+        "evidenceMassCorrect": true,
+        "compiledAnswer": 0.7083333333333333
+      },
+      "pxcSolution": {
+        "status": "resolved",
+        "answer": 0.7083333333333333,
+        "calculation": "fn.solution.query"
+      }
+    },
+    {
+      "id": "terra-medium",
+      "model": "gpt-5.6-terra",
+      "effort": "medium",
+      "baseline": {
+        "correct": 5,
+        "total": 5,
+        "results": [
+          {
+            "id": "q1",
+            "expected": 0.5555555555555556,
+            "submitted": 0.555555556,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q2",
+            "expected": 0.1111111111111111,
+            "submitted": 0.111111111,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q3",
+            "expected": 0.5555555555555556,
+            "submitted": 0.555555556,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q4",
+            "expected": 1,
+            "submitted": 1,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q5",
+            "expected": 0.8620689655172412,
+            "submitted": 0.862068966,
+            "correct": true,
+            "reason": ""
+          }
+        ]
+      },
+      "transfer": {
+        "correct": 5,
+        "total": 5,
+        "results": [
+          {
+            "id": "q1",
+            "expected": 0.588235294117647,
+            "submitted": 0.588235,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q2",
+            "expected": 0.1764705882352941,
+            "submitted": 0.176471,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q3",
+            "expected": 0.588235294117647,
+            "submitted": 0.588235,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q4",
+            "expected": 1,
+            "submitted": 1,
+            "correct": true,
+            "reason": ""
+          },
+          {
+            "id": "q5",
+            "expected": 0.7083333333333333,
+            "submitted": 0.708333,
+            "correct": true,
+            "reason": ""
+          }
+        ]
+      },
+      "certificate": {
+        "compatibleSetCorrect": true,
+        "missing": [],
+        "extra": [],
+        "duplicates": 0,
+        "violations": [],
+        "ledger": [
+          {
+            "pits": [
+              "A",
+              "C"
+            ],
+            "priorWeight": 0.04409999999999999,
+            "matchesQuery": false
+          },
+          {
+            "pits": [
+              "B",
+              "C"
+            ],
+            "priorWeight": 0.04409999999999999,
+            "matchesQuery": true
+          },
+          {
+            "pits": [
+              "A",
+              "B",
+              "C"
+            ],
+            "priorWeight": 0.018899999999999997,
+            "matchesQuery": true
+          },
+          {
+            "pits": [
+              "B",
+              "D"
+            ],
+            "priorWeight": 0.04409999999999999,
+            "matchesQuery": true
+          },
+          {
+            "pits": [
+              "A",
+              "B",
+              "D"
+            ],
+            "priorWeight": 0.018899999999999997,
+            "matchesQuery": true
+          },
+          {
+            "pits": [
+              "A",
+              "C",
+              "D"
+            ],
+            "priorWeight": 0.018899999999999997,
+            "matchesQuery": false
+          },
+          {
+            "pits": [
+              "B",
+              "C",
+              "D"
+            ],
+            "priorWeight": 0.018899999999999997,
+            "matchesQuery": true
+          },
+          {
+            "pits": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "priorWeight": 0.0081,
+            "matchesQuery": true
+          }
+        ],
+        "evidenceMass": 0.21599999999999997,
+        "submittedEvidenceMass": 0.216,
+        "evidenceMassCorrect": true,
+        "compiledAnswer": 0.7083333333333333
+      },
+      "pxcSolution": {
+        "status": "resolved",
+        "answer": 0.7083333333333333,
+        "calculation": "fn.solution.query"
+      }
+    }
+  ]
+}
