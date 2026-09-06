@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wumpus LAB</title>
+<style>
+:root{color-scheme:dark;font:16px ui-monospace,SFMono-Regular,Consolas,monospace;color:#dce7ea;background:#0c1218}*{box-sizing:border-box}body{margin:0;padding:24px;max-width:1200px;margin-inline:auto}header{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid #385062;margin-bottom:20px}h1{font-size:22px;color:#7ae5c4}header span{color:#9cabb8;font-size:14px}.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0}button,input,select{font:inherit;padding:10px;border:1px solid #426071;background:#14222d;color:inherit;border-radius:4px}button{cursor:pointer}button:hover,button:focus-visible{border-color:#7ae5c4;color:#7ae5c4}button:disabled{opacity:.4;cursor:default}input[type=number]{width:100px}label{display:inline-flex;gap:8px;align-items:center}main{display:grid;grid-template-columns:1fr 1fr;gap:20px}section{border:1px solid #324655;padding:18px;background:#101a23;min-width:0}h2{font-size:16px;color:#7ae5c4;margin:0 0 16px}pre{font:15px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre;overflow:auto;margin:0;tab-size:4}#screen{font-size:17px}#message{color:#ffb19c;min-height:24px}.note{font-size:14px;color:#a9bcc8;line-height:1.6}a{color:#7ae5c4}input[type=range]{max-width:180px}footer{margin-top:18px}#trace{max-height:420px;overflow:auto}summary{cursor:pointer;margin-bottom:12px}@media(max-width:800px){body{padding:12px}main{grid-template-columns:1fr}header{display:block}header span{display:block;margin-bottom:12px}#screen{font-size:15px}}
+</style>
+<header><h1>WUMPUS LAB</h1><span>Play · Watch · Inspect</span></header>
+<div class="controls">
+  <label>World <select id="world"><option value="random">Seeded</option><option value="demo">Demo</option></select></label>
+  <label>Seed <input id="seed" type="number" value="2" step="1"></label>
+  <label>Pit prior <input id="prior" type="number" value="0.2" min="0.01" max="0.99" step="0.05"></label>
+  <button id="restart">New run</button>
+</div>
+<main>
+<section><h2>WORLD</h2><pre id="screen" aria-label="Wumpus world">Loading LAB…</pre>
+<div class="controls" id="actions">
+<button data-action="turnLeft">← Turn [L]</button><button data-action="forward">Forward [F]</button><button data-action="turnRight">Turn [R] →</button>
+<button data-action="grab">Grab [G]</button><button data-action="shoot">Shoot [S]</button><button data-action="climb">Climb [C]</button>
+</div>
+<div class="controls"><button id="step">Policy step [N]</button><button id="run">Run policy [Space]</button><label>Speed <input id="speed" type="range" min="150" max="1500" value="650" step="50"></label></div>
+<div class="controls"><button id="back">Previous [</button><span id="position"></span><button id="next">Next ]</button><label><input id="reveal" type="checkbox">Reveal world</label><button id="save">Save replay</button></div>
+<p id="message" role="status"></p><p class="note">? = unvisited · A = you · P = pit · W = Wumpus · G = gold.<br>Reveal changes your view. The policy still receives only its percepts.</p></section>
+<section><h2>WHY THIS BELIEF?</h2>
+<pre id="priors"></pre><p class="note">A and B are the two adjacent cells in this teaching example. Change the pit prior to recompute with the same breeze observation. “New run” applies it to a fresh game.</p>
+<details open><summary>Live beliefs & calculation trace</summary><pre id="trace"></pre></details></section>
+</main>
+<footer class="note">Built-in policy: pit-risk explorer; Wumpus-location inference is not implemented yet. <a href="https://github.com/samuelpmahan/EmbodiedWumpusWorld">Source</a></footer>
+<script type="module" src="./src/browser.js"></script>
+</html>
