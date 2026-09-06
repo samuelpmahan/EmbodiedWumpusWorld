@@ -1,6 +1,19 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {teachingSet,gradeAnswers,compileLesson} from '../src/teaching.js';
+import {resolveCertificate,transferSet} from '../src/teaching.js';
+
+test('production solver ignores learner numbers and records verified arithmetic',()=>{
+ const lesson=transferSet()[4],retainedWorlds=lesson.posterior.filter(h=>h.weight>0).map(h=>h.pits);
+ const certificate={retainedWorlds,evidenceMass:.1278,answer:.8521126761};
+ const result=resolveCertificate(lesson.spec,certificate);
+ assert.equal(result.status,'resolved');assert.ok(Math.abs(result.answer-17/24)<1e-12);
+ assert.equal(certificate.evidenceMass,.1278);
+ assert.equal(result.records.at(-1).calculations[0].address,'fn.solution.query');
+ assert.equal(resolveCertificate(lesson.spec,{retainedWorlds:retainedWorlds.slice(1),answer:17/24}).answer,null);
+ assert.equal(resolveCertificate(lesson.spec,{retainedWorlds:[...retainedWorlds,retainedWorlds[0]]}).status,'needs-correction');
+ assert.equal(resolveCertificate(lesson.spec,{retainedWorlds:[...retainedWorlds,['A','D']]}).status,'needs-correction');
+});
 test('lesson answers match independent closed-form probabilities',()=>{
  for(const p of [.2,.3,.4]){
  const [single,both,repeated,excluded,overlap]=teachingSet(p);

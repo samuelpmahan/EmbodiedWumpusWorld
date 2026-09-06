@@ -2,7 +2,7 @@ import {createPxC,executeTick,conditionWeights,marginalProbability} from './core
 
 /** Compile a finite lesson using the same probability atoms as the LAB. */
 export function compileLesson({id,cells,prior,observations,query}) {
-  if(!Array.isArray(cells)||!cells.length||cells.length>12||new Set(cells).size!==cells.length)throw Error('Use 1–12 distinct cells.');
+  if(!Array.isArray(cells)||!cells.length||cells.length>12||cells.some(c=>typeof c!=='string'||!c.length)||new Set(cells).size!==cells.length)throw Error('Use 1–12 distinct named cells.');
   if(!Number.isFinite(prior)||prior<=0||prior>=1)throw Error('Prior must be inside (0,1).');
   if(!Array.isArray(query)||!query.length||!query.every(c=>cells.includes(c)))throw Error('Query must name known cells.');
   if(!Array.isArray(observations)||!observations.every(o=>Array.isArray(o.cells)&&o.cells.length&&o.cells.every(c=>cells.includes(c))&&typeof o.breeze==='boolean'))throw Error('Observations must name known cells and a boolean breeze.');
@@ -52,7 +52,7 @@ export function transferSet(prior=.3) {
 export function gradeCertificate(lesson,certificate) {
   const worlds=certificate?.retainedWorlds;
   if(!Array.isArray(worlds)||worlds.some(w=>!Array.isArray(w)||new Set(w).size!==w.length||w.some(c=>!lesson.spec.cells.includes(c))))throw Error('Certificate must list assignments of known cells.');
-  const canonical=w=>[...w].sort().join(','),actual=worlds.map(canonical);
+  const canonical=w=>JSON.stringify([...w].sort()),actual=worlds.map(canonical);
   const expected=lesson.posterior.filter(h=>h.weight>0).map(h=>canonical(h.pits));
   const missing=expected.filter(k=>!actual.includes(k)),extra=actual.filter(k=>!expected.includes(k)),duplicates=actual.length-new Set(actual).size;
   const compatibleSetCorrect=!missing.length&&!extra.length&&!duplicates;
@@ -60,4 +60,29 @@ export function gradeCertificate(lesson,certificate) {
   const violations=worlds.flatMap(pits=>lesson.spec.observations.flatMap((o,index)=>o.cells.some(c=>pits.includes(c))===o.breeze?[]:[{pits,observation:index,cells:o.cells,expectedBreeze:o.breeze,actualBreeze:o.cells.some(c=>pits.includes(c))}]));
   const ledger=compatibleSetCorrect?lesson.hypotheses.filter(h=>expected.includes(canonical(h.pits))).map(h=>({pits:h.pits,priorWeight:h.weight,matchesQuery:lesson.spec.query.every(c=>h.pits.includes(c))})):[];
   return {compatibleSetCorrect,missing,extra,duplicates,violations,ledger,evidenceMass,submittedEvidenceMass:certificate.evidenceMass??null,evidenceMassCorrect:typeof certificate.evidenceMass==='number'&&Math.abs(certificate.evidenceMass-evidenceMass)<1e-5,compiledAnswer:compatibleSetCorrect?lesson.answer:null};
+}
+
+/** Production path: learner supplies assignments; PxC owns all arithmetic. */
+export function resolveCertificate(spec, certificate) {
+  const lesson=compileLesson(spec), board=createPxC(), records=[...lesson.records];
+  const check=gradeCertificate(lesson,certificate);
+  const validation={compatibleSetCorrect:check.compatibleSetCorrect,missing:check.missing,extra:check.extra,duplicates:check.duplicates,violations:check.violations};
+  records.push(executeTick(board,{id:'solution.materialize',produces:['px.solution.spec','px.solution.assignments','px.solution.validation','px.solution.prior'],run:b=>{
+    b.set('px.solution.spec',lesson.spec);
+    b.set('px.solution.assignments',certificate.retainedWorlds);
+    b.set('px.solution.validation',validation);
+    b.set('px.solution.prior',lesson.hypotheses);
+  }}));
+  if(!validation.compatibleSetCorrect)return {status:'needs-correction',answer:null,validation,records};
+  const key=pits=>JSON.stringify([...pits].sort());
+  board.register('fn.solution.weight',({assignments,prior})=>{
+    const selected=new Set(assignments.map(key));
+    return prior.filter(h=>selected.has(key(h.pits)));
+  });
+  board.register('fn.solution.normalize',weighted=>conditionWeights(weighted,()=>1));
+  board.register('fn.solution.query',({posterior,query})=>marginalProbability(posterior,h=>query.every(c=>h.pits.includes(c))));
+  records.push(executeTick(board,{id:'solution.weight',consumes:['px.solution.assignments','px.solution.prior'],produces:['px.solution.weighted'],run:b=>b.set('px.solution.weighted',b.call('fn.solution.weight',{assignments:b.get('px.solution.assignments'),prior:b.get('px.solution.prior')}))}));
+  records.push(executeTick(board,{id:'solution.normalize',consumes:['px.solution.weighted'],produces:['px.solution.posterior'],run:b=>b.set('px.solution.posterior',b.call('fn.solution.normalize',b.get('px.solution.weighted')))}));
+  records.push(executeTick(board,{id:'solution.query',consumes:['px.solution.posterior','px.solution.spec'],produces:['px.solution.answer'],run:b=>b.set('px.solution.answer',b.call('fn.solution.query',{posterior:b.get('px.solution.posterior'),query:b.get('px.solution.spec').query}))}));
+  return {status:'resolved',answer:board.get('px.solution.answer'),validation,ledger:board.get('px.solution.weighted'),posterior:board.get('px.solution.posterior'),records};
 }

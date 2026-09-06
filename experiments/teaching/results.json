@@ -252,6 +252,11 @@
         "submittedEvidenceMass": 0.216,
         "evidenceMassCorrect": true,
         "compiledAnswer": 0.7083333333333333
+      },
+      "pxcSolution": {
+        "status": "resolved",
+        "answer": 0.7083333333333333,
+        "calculation": "fn.solution.query"
       }
     },
     {
@@ -422,6 +427,11 @@
         "submittedEvidenceMass": 0.1278,
         "evidenceMassCorrect": false,
         "compiledAnswer": 0.7083333333333333
+      },
+      "pxcSolution": {
+        "status": "resolved",
+        "answer": 0.7083333333333333,
+        "calculation": "fn.solution.query"
       }
     },
     {
@@ -592,6 +602,11 @@
         "submittedEvidenceMass": 0.216,
         "evidenceMassCorrect": true,
         "compiledAnswer": 0.7083333333333333
+      },
+      "pxcSolution": {
+        "status": "resolved",
+        "answer": 0.7083333333333333,
+        "calculation": "fn.solution.query"
       }
     },
     {
@@ -762,6 +777,11 @@
         "submittedEvidenceMass": 0.216,
         "evidenceMassCorrect": true,
         "compiledAnswer": 0.7083333333333333
+      },
+      "pxcSolution": {
+        "status": "resolved",
+        "answer": 0.7083333333333333,
+        "calculation": "fn.solution.query"
       }
     }
   ]

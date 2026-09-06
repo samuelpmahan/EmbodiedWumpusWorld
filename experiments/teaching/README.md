@@ -1,5 +1,11 @@
 # Teaching through deterministic meaning: bounded pilot
 
+## Arithmetic now executes in PxC
+
+`node experiments/teaching/run.js solve assignments.json transfer` accepts a certificate containing `retainedWorlds`. It rejects incomplete, duplicate, or incompatible assignments; otherwise it weights them from the declared prior, normalizes, and computes the query through named calculations. Learner-supplied probabilities and totals are ignored. The resulting Tick receipts accompany the answer. This is the operational answer path; `grade` remains an audit of the original learner response.
+
+The saved report now resolves all four valid transfer certificates to **17/24 = 0.7083333333**. Original learner grades and response data remain unchanged. This is a deterministic system correction, not a claim that the learners retrained themselves.
+
 We ran one Luna-low pilot, then four separate learner sessions: Luna low/medium and Terra low/medium. Each learner answered a baseline before receiving a worked lesson and a transfer packet. Peak requested parallelism was four learner trials; each trial had two turns. No external model API loop or automatic retries were used. Learners were instructed not to use tools, other agents, files, or web. These are small demonstrations, not model rankings or evidence of durable learning.
 
 ## Deterministic substrate
