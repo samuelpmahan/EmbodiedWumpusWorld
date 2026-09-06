@@ -1,0 +1,444 @@
+{
+  "protocol": "bounded-teaching-pilot@1",
+  "note": "Normalized answer records: numeric precision normalized for baseline answers that graded identically; certificate order canonicalized. No hidden model reasoning captured. Pilot receives arithmetic correction; four-way cohort receives same worked lesson and certificate request.",
+  "pilot": {
+    "model": "gpt-5.6-luna",
+    "effort": "low",
+    "baseline": {
+      "answers": [
+        {
+          "id": "q1",
+          "value": 0.5555555556
+        },
+        {
+          "id": "q2",
+          "value": 0.1111111111
+        },
+        {
+          "id": "q3",
+          "value": 0.5555555556
+        },
+        {
+          "id": "q4",
+          "value": 1
+        },
+        {
+          "id": "q5",
+          "value": 0.8333333333
+        }
+      ]
+    },
+    "transfer": {
+      "answers": [
+        {
+          "id": "q1",
+          "value": 0.5882352941
+        },
+        {
+          "id": "q2",
+          "value": 0.1764705882
+        },
+        {
+          "id": "q3",
+          "value": 0.5882352941
+        },
+        {
+          "id": "q4",
+          "value": 1
+        },
+        {
+          "id": "q5",
+          "value": 0.5882352941
+        }
+      ]
+    },
+    "baseline_q5_reason": "Both breezes occur with probability 0.2+0.8(0.2^2)=0.24, while B is a pit in probability 0.2 of that event.",
+    "transfer_q5_reason": "Enumerating the shared-cell constraints gives P(B and all breezes)=0.153 and P(all breezes)=0.2601, whose ratio is 0.5882352941."
+  },
+  "cohort": [
+    {
+      "id": "luna-low",
+      "model": "gpt-5.6-luna",
+      "effort": "low",
+      "baseline": {
+        "answers": [
+          {
+            "id": "q1",
+            "value": 0.555555556
+          },
+          {
+            "id": "q2",
+            "value": 0.111111111
+          },
+          {
+            "id": "q3",
+            "value": 0.555555556
+          },
+          {
+            "id": "q4",
+            "value": 1
+          },
+          {
+            "id": "q5",
+            "value": 0.862068966
+          }
+        ]
+      },
+      "transfer": {
+        "answers": [
+          {
+            "id": "q1",
+            "value": 0.588235
+          },
+          {
+            "id": "q2",
+            "value": 0.176471
+          },
+          {
+            "id": "q3",
+            "value": 0.588235
+          },
+          {
+            "id": "q4",
+            "value": 1
+          },
+          {
+            "id": "q5",
+            "value": 0.708333
+          }
+        ]
+      },
+      "certificate": {
+        "retainedWorlds": [
+          [
+            "B",
+            "C"
+          ],
+          [
+            "A",
+            "B",
+            "C"
+          ],
+          [
+            "B",
+            "C",
+            "D"
+          ],
+          [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          [
+            "B",
+            "D"
+          ],
+          [
+            "A",
+            "B",
+            "D"
+          ],
+          [
+            "A",
+            "C"
+          ],
+          [
+            "A",
+            "C",
+            "D"
+          ]
+        ],
+        "evidenceMass": 0.216
+      }
+    },
+    {
+      "id": "luna-medium",
+      "model": "gpt-5.6-luna",
+      "effort": "medium",
+      "baseline": {
+        "answers": [
+          {
+            "id": "q1",
+            "value": 0.555555556
+          },
+          {
+            "id": "q2",
+            "value": 0.111111111
+          },
+          {
+            "id": "q3",
+            "value": 0.555555556
+          },
+          {
+            "id": "q4",
+            "value": 1
+          },
+          {
+            "id": "q5",
+            "value": 0.862068966
+          }
+        ]
+      },
+      "transfer": {
+        "answers": [
+          {
+            "id": "q1",
+            "value": 0.5882352941
+          },
+          {
+            "id": "q2",
+            "value": 0.1764705882
+          },
+          {
+            "id": "q3",
+            "value": 0.5882352941
+          },
+          {
+            "id": "q4",
+            "value": 1
+          },
+          {
+            "id": "q5",
+            "value": 0.8521126761
+          }
+        ]
+      },
+      "certificate": {
+        "retainedWorlds": [
+          [
+            "B",
+            "C"
+          ],
+          [
+            "A",
+            "B",
+            "C"
+          ],
+          [
+            "B",
+            "C",
+            "D"
+          ],
+          [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          [
+            "B",
+            "D"
+          ],
+          [
+            "A",
+            "B",
+            "D"
+          ],
+          [
+            "A",
+            "C"
+          ],
+          [
+            "A",
+            "C",
+            "D"
+          ]
+        ],
+        "evidenceMass": 0.1278
+      }
+    },
+    {
+      "id": "terra-low",
+      "model": "gpt-5.6-terra",
+      "effort": "low",
+      "baseline": {
+        "answers": [
+          {
+            "id": "q1",
+            "value": 0.555555556
+          },
+          {
+            "id": "q2",
+            "value": 0.111111111
+          },
+          {
+            "id": "q3",
+            "value": 0.555555556
+          },
+          {
+            "id": "q4",
+            "value": 1
+          },
+          {
+            "id": "q5",
+            "value": 0.862068966
+          }
+        ]
+      },
+      "transfer": {
+        "answers": [
+          {
+            "id": "q1",
+            "value": 0.588235294
+          },
+          {
+            "id": "q2",
+            "value": 0.176470588
+          },
+          {
+            "id": "q3",
+            "value": 0.588235294
+          },
+          {
+            "id": "q4",
+            "value": 1
+          },
+          {
+            "id": "q5",
+            "value": 0.708333333
+          }
+        ]
+      },
+      "certificate": {
+        "retainedWorlds": [
+          [
+            "B",
+            "C"
+          ],
+          [
+            "A",
+            "B",
+            "C"
+          ],
+          [
+            "B",
+            "C",
+            "D"
+          ],
+          [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          [
+            "B",
+            "D"
+          ],
+          [
+            "A",
+            "B",
+            "D"
+          ],
+          [
+            "A",
+            "C"
+          ],
+          [
+            "A",
+            "C",
+            "D"
+          ]
+        ],
+        "evidenceMass": 0.216
+      }
+    },
+    {
+      "id": "terra-medium",
+      "model": "gpt-5.6-terra",
+      "effort": "medium",
+      "baseline": {
+        "answers": [
+          {
+            "id": "q1",
+            "value": 0.555555556
+          },
+          {
+            "id": "q2",
+            "value": 0.111111111
+          },
+          {
+            "id": "q3",
+            "value": 0.555555556
+          },
+          {
+            "id": "q4",
+            "value": 1
+          },
+          {
+            "id": "q5",
+            "value": 0.862068966
+          }
+        ]
+      },
+      "transfer": {
+        "answers": [
+          {
+            "id": "q1",
+            "value": 0.588235
+          },
+          {
+            "id": "q2",
+            "value": 0.176471
+          },
+          {
+            "id": "q3",
+            "value": 0.588235
+          },
+          {
+            "id": "q4",
+            "value": 1
+          },
+          {
+            "id": "q5",
+            "value": 0.708333
+          }
+        ]
+      },
+      "certificate": {
+        "retainedWorlds": [
+          [
+            "B",
+            "C"
+          ],
+          [
+            "A",
+            "B",
+            "C"
+          ],
+          [
+            "B",
+            "C",
+            "D"
+          ],
+          [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          [
+            "B",
+            "D"
+          ],
+          [
+            "A",
+            "B",
+            "D"
+          ],
+          [
+            "A",
+            "C"
+          ],
+          [
+            "A",
+            "C",
+            "D"
+          ]
+        ],
+        "evidenceMass": 0.216
+      }
+    }
+  ]
+}

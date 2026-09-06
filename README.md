@@ -108,3 +108,7 @@ Choose **Belief debugger** in the workspace selector. The reasoning explorer com
 The investigation uses a separate PxC containing no hidden world. It recomputes finite Bayesian pits and uniform compatible stationary Wumpus locations. A scream removes live danger but preserves the location distribution. The danger bound is `min(1, pit + live Wumpus)`, not an independence formula. The advisor does not plan shots or maximize expected score. Branch reconstruction supports the built-in tracker; arbitrary custom policies need their own reconstruction factory.
 
 Reusable core APIs, independent of Wumpus: [`evaluateConstraint`](docs/constraints.md), `traceAddress`, `createPxC`, and `executeTick`. See [belief debugger semantics](docs/belief-debugger.md).
+
+### Deterministic teaching experiments
+
+The [bounded learner pilot](experiments/teaching/README.md) compiles five Wumpus concepts into exact probability lessons, tests transfer with Luna/Terra learners, and grades semantic assignments separately from arithmetic. Run `node experiments/teaching/report.js` to reproduce the saved grades without model calls.
